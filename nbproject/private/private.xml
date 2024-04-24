@@ -4,7 +4,10 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/User/Documents/NetBeansProjects/DungeonCrawler/src/projetodungeoncrawler/ProjetoDungeonCrawler.java</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/DungeonCrawler/src/projetodungeoncrawler/armas/Arma.java</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/DungeonCrawler/src/projetodungeoncrawler/armas/Armas.java</file>
             <file>file:/C:/Users/User/Documents/NetBeansProjects/DungeonCrawler/src/projetodungeoncrawler/Monstro.java</file>
+            <file>file:/C:/Users/User/Documents/NetBeansProjects/DungeonCrawler/src/projetodungeoncrawler/Tesouro.java</file>
             <file>file:/C:/Users/User/Documents/NetBeansProjects/DungeonCrawler/src/projetodungeoncrawler/Player.java</file>
         </group>
     </open-files>

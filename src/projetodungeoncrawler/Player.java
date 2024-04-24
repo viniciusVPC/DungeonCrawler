@@ -2,8 +2,8 @@ package projetodungeoncrawler;
 import projetodungeoncrawler.armas.*;
 
 public class Player {
-    //par√¢metros
-    int vidaMax, vida, forca;
+    //par‚metros
+    int vidaMax, vida, forca, dinheiro;
     Boolean temArma;
     Armas seletorArma;
     Arma armaAtual;
@@ -20,6 +20,14 @@ public class Player {
 
     public void setVida(int vida) {
         this.vida = vida;
+    }
+    
+    public int getDinheiro(){
+        return dinheiro;
+    }
+    
+    public void adicionaDinheiro(int dinheiro){
+        this.dinheiro += dinheiro;
     }
     
     public float Atacar(){
