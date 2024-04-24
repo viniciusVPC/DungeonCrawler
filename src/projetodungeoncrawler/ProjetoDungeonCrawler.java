@@ -7,6 +7,8 @@ public class ProjetoDungeonCrawler {
 Random rand = new Random();
 ArrayList<Monstro> monstros = new ArrayList();
 Scanner input = new Scanner(System.in);
+int rounds = 0;
+Player jogador = new Player();
 
     public static void main(String[] args) {
         ProjetoDungeonCrawler projeto = new ProjetoDungeonCrawler();
@@ -14,7 +16,7 @@ Scanner input = new Scanner(System.in);
     }
     
     public void Start(){
-        int quantMonstros = rand.nextInt(5);
+        int quantMonstros = rand.nextInt(1, 5);
         System.out.println("Tu te deparas com " + quantMonstros + " monstros.");
         for (int i = 0; i < quantMonstros; i++) {
             Monstro monstro = new Monstro();
@@ -27,6 +29,8 @@ Scanner input = new Scanner(System.in);
     public void Combate(){
         int resposta;
         do{
+            rounds++;
+            System.out.println("ROUND: " + rounds);
             System.out.print("O que tu vais fazer?\n[1] Atacar\n[2] Curar\n[3] Fugir\n");
             resposta = input.nextInt();
             switch(resposta){
@@ -38,7 +42,16 @@ Scanner input = new Scanner(System.in);
                 case 3 -> System.out.println("Aqui tu foges.");
                 default -> System.out.println("Resposta errada.");
             }
+            RoundInimigo();
+            
         }while(resposta != 0);
+    }
+    
+    public void RoundInimigo(){
+        for (Monstro monstro : monstros) {
+            jogador.setVida(jogador.getVida() - monstro.Ataca());
+            System.out.println("Você agora está com " + jogador.getVida() + "pontos de vida");
+        }
     }
     
     public void Ataque(){
@@ -58,6 +71,7 @@ Scanner input = new Scanner(System.in);
         for (int i = 0; i < monstros.size(); i++) {
             System.out.print(monstros.get(i).getNome() + "\t");
         }
+        System.out.println("");
     }
     
     public String introduzMonstro(Monstro monstro){
