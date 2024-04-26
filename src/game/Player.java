@@ -1,5 +1,6 @@
-package projetodungeoncrawler;
-import projetodungeoncrawler.armas.*;
+package game;
+import armas.Armas;
+import armas.Arma;
 
 public class Player {
     //parâmetros

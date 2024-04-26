@@ -1,4 +1,4 @@
-package projetodungeoncrawler.armas;
+package armas;
 
 public class Armas {
     public Arma espadaMadeira = new Arma(1, 0.5f, "Espada de Madeira", "Uma simples espada de madeira. Nâo parecer ser muito forte.");

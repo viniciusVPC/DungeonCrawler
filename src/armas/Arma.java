@@ -1,4 +1,4 @@
-package projetodungeoncrawler.armas;
+package armas;
 
 public class Arma {
     int areaDano;
