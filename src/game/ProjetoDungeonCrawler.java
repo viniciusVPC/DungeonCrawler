@@ -1,4 +1,4 @@
-package projetodungeoncrawler;
+package game;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -14,9 +14,13 @@ public class ProjetoDungeonCrawler {
     Player jogador = new Player();
     int fase = 1;
     int[] posicPlayer, posicTesouro;
+    ArrayList<int[]> posicItens = new ArrayList();
+    //int[][] posicItem;
     Tesouro tesouroFase;
 
     int xP, yP, xT, yT;
+    int[] xI;
+    int[] yI;
 
     public static void main(String[] args) {
         ProjetoDungeonCrawler projeto = new ProjetoDungeonCrawler();
@@ -26,10 +30,13 @@ public class ProjetoDungeonCrawler {
     void GeraMapa() {
         mapa = new String[5 + fase - 1][5 + fase - 1];
         tesouroFase = new Tesouro();
+        xI = new int[fase];
+        yI = new int[fase];
+
         for (int i = 0; i < mapa.length; i++) {
             for (int j = 0; j < mapa[i].length; j++) {
                 mapa[i][j] = "[ ]";
-            };
+            }
         }
 
         do {
@@ -37,12 +44,21 @@ public class ProjetoDungeonCrawler {
             yP = rand.nextInt(mapa.length);
             xT = rand.nextInt(mapa.length);
             yT = rand.nextInt(mapa.length);
+
+            for (int i = 0; i < xI.length; i++) {
+                do {
+                    xI[i] = rand.nextInt(mapa.length);
+                    yI[i] = rand.nextInt(mapa.length);
+                } while (xI[i] == xP && yI[i] == yP);
+            }
+
         } while ((xP == xT && yP == yT) || (xP - xT <= 1 && yP - yT <= 1));
-
+        for (int i = 0; i < fase; i++) {
+            int[] posicItemTemp = new int[]{xI[i], yI[i]};
+            posicItens.add(posicItemTemp);
+        }
         posicPlayer = new int[]{xP, yP};
-
         posicTesouro = new int[]{xT, yT};
-
     }
 
     void LimpaMapa() {
@@ -60,6 +76,10 @@ public class ProjetoDungeonCrawler {
         System.out.println("Mapa da Fase " + fase);
         mapa[xP][yP] = "[P]";
         mapa[xT][yT] = "[T]";
+        for (int i = 0; i < posicItens.size(); i++) {
+            mapa[xI[i]][yI[i]] = "[I]";
+        }
+
         for (int i = 0; i < mapa.length; i++) {
             for (int j = 0; j < mapa[i].length; j++) {
                 System.out.print(mapa[i][j]);
@@ -80,8 +100,8 @@ public class ProjetoDungeonCrawler {
         GeraMapa();
         LoopPrincipal();
     }
-    
-    public void ProximaFase(){
+
+    public void ProximaFase() {
         MudaTela();
         System.out.println("Parabéns! Você passou para a próxima fase!");
         fase++;
@@ -93,20 +113,26 @@ public class ProjetoDungeonCrawler {
     public void LoopPrincipal() {
         int surpresa;
         do {
-            
+
             if (xP == xT && yP == yT) {
                 PegaTesouro();
                 ProximaFase();
+            } else {
+
+                if ("[I]".equals(mapa[xP][yP])) {
+                    PegaItem();
+                }
             }
             ExibeMapa();
+
             Mover();
             surpresa = rand.nextInt(10);
         } while (surpresa <= 4);
         AtaqueSurpresa();
     }
 
-     public void AtaqueSurpresa() {
-        int quantMonstros = rand.nextInt(1, 1+fase);
+    public void AtaqueSurpresa() {
+        int quantMonstros = rand.nextInt(1, 1 + fase);
         MudaTela();
         System.out.println("ATAQUE SURPRESA");
         System.out.println("Tu te deparas com " + quantMonstros + " monstros.");
@@ -119,11 +145,22 @@ public class ProjetoDungeonCrawler {
         FimDoCombate();
         LoopPrincipal();
     }
-    
+
     public void PegaTesouro() {
         MudaTela();
         System.out.println("Parabéns você chegou ao tesouro!");
         System.out.println("O tesouro é: um " + tesouroFase.getNome() + " " + tesouroFase.getAdjetivo());
+        EnterParaProsseguir();
+    }
+
+    public void PegaItem() {
+        MudaTela();
+        System.out.println("Parabéns, você achou um item!");
+        for (int i = 0; i < posicItens.size(); i++) {
+            if (posicItens.get(i)[0] == xP && posicItens.get(i)[1] == yP) {
+                posicItens.remove(i);
+            }
+        }
         EnterParaProsseguir();
     }
 
