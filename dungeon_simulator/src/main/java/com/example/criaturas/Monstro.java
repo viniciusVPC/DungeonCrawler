@@ -30,10 +30,14 @@ public class Monstro {
         return vida;
     }
 
+    public void receberDano(float dano) {
+        vida -= dano;
+    }
+
     public int Ataca() {
-        System.out.println("O " + nome + " te ataca e te dá " + dano + " de dano.");
         if (dano < 1)
             dano = 1;
+        System.out.println("O " + nome + " te ataca e te dá " + dano + " de dano.");
         return dano;
     }
 }

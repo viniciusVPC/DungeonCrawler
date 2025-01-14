@@ -4,6 +4,8 @@ import java.util.Random;
 import java.util.Scanner;
 
 import com.example.combate.Combate;
+import com.example.items.Arma;
+import com.example.items.Armas;
 import com.example.player.Player;
 
 public class Sistema {
@@ -15,32 +17,27 @@ public class Sistema {
     int xP, yP, xT, yT;
     Player jogador = new Player();
     Combate combate = new Combate();
+    Armas armas = new Armas();
 
     Random rand = new Random();
 
     public void LoopPrincipal(Map map) {
         this.map = map;
-        int surpresa;
         while (true) {
-            do {
 
-                if (xP == xT && yP == yT) {
-                    PegaTesouro();
-                    ProximaFase();
-                } else {
-                    if ("[I]".equals(map.getMapa()[xP][yP])) {
-                        PegaItem();
-                    }
+            if (xP == xT && yP == yT) {
+                PegaTesouro();
+                ProximaFase();
+            } else {
+                if ("[I]".equals(map.getMapa()[xP][yP])) {
+                    PegaItem();
                 }
-                MudaTela();
-                map.ExibeMapa();
+            }
+            MudaTela();
+            map.ExibeMapa(jogador);
 
-                jogador.Mover(this, map);
-                surpresa = rand.nextInt(10);
-            } while (surpresa <= 4);
-            combate.AtaqueSurpresa(this, jogador);
+            jogador.Opcoes(this, map);
         }
-
     }
 
     public void EnterParaProsseguir() {
@@ -60,13 +57,21 @@ public class Sistema {
     public void PegaItem() {
         MudaTela();
         System.out.println("Parabéns, você achou um item!");
-        // TODO mostrar item pego
+        Arma novaArma = armas.ArmaRandom();
+        System.out.println(ExibeItem(novaArma));
+        jogador.PegarArma(novaArma);
+
         for (int i = 0; i < fase.posicItens.size(); i++) {
             if (fase.posicItens.get(i)[0] == xP && fase.posicItens.get(i)[1] == yP) {
                 fase.posicItens.remove(i);
             }
         }
         EnterParaProsseguir();
+    }
+
+    public String ExibeItem(Arma arma) {
+        String texto = "Você conseguiu uma arma: " + arma.getNome();
+        return texto;
     }
 
     public void ProximaFase() {

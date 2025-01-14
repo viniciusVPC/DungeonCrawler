@@ -44,7 +44,7 @@ public class Combate {
 
     public void exibeMonstros() {
         for (int i = 0; i < monstros.size(); i++) {
-            System.out.print(monstros.get(i).getNome() + "\t");
+            System.out.print(monstros.get(i).getNome() + " vida: " + monstros.get(i).getVida() + "\t");
         }
         System.out.println("");
     }
@@ -85,12 +85,18 @@ public class Combate {
         }
         System.out.print("\n");
         int resposta = input.nextInt();
+        Monstro alvo = monstros.get(resposta - 1);
         sis.MudaTela();
-        System.out.println("Tu atacas e derrota o " + monstros.get(resposta - 1).getNome());
-        // TODO dano subtrair vida e não matar de uma vez.
-        monstros.remove(monstros.get(resposta - 1));
+        float dano = jogador.Atacar();
+        System.out.println("Tu atacas e dá " + dano + " de dano no " + alvo.getNome());
+        if (dano >= alvo.getVida()) {
+            System.out.println("Você derrota o " + alvo.getNome());
+            monstros.remove(alvo);
+        }
+        alvo.receberDano(dano);
+
         if (monstros.size() >= 1) {
-            System.out.println("Agora resta somente: ");
+            System.out.println("Inimigos restantes: ");
             exibeMonstros();
         } else {
             System.out.println("Todos os inimigos foram derrotados!");
@@ -114,6 +120,5 @@ public class Combate {
         System.out.println("Você encontra " + premio + " moedas.");
         jogador.adicionaDinheiro(premio);
         sis.EnterParaProsseguir();
-
     }
 }

@@ -1,6 +1,7 @@
 package com.example.game;
 
 import com.example.items.Tesouro;
+import com.example.player.Player;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -9,15 +10,9 @@ public class Map {
 
     Sistema sis;
     Random rand = new Random();
-
+    Player jogador = null;
     String[][] mapa;
     Fase fase;
-
-    /*
-     * public Map(Sistema sis) {
-     * this.sis = sis;
-     * }
-     */
 
     public Fase GeraMapa(Sistema sis) {
         this.sis = sis;
@@ -59,7 +54,9 @@ public class Map {
         return fase;
     }
 
-    void ExibeMapa() {
+    void ExibeMapa(Player jogador) {
+        if (this.jogador == null)
+            this.jogador = jogador;
         System.out.println("FASE " + sis.getFaseNum() + ":");
         LimpaMapa();
         System.out.println("Mapa da Fase " + sis.getFaseNum());
@@ -78,6 +75,8 @@ public class Map {
         System.out.println("Legenda:\n\tP = Player\n\tT = Tesouro");
         System.out
                 .println("Vida atual: " + sis.getJogador().getVida() + " Dinheiro: " + sis.getJogador().getDinheiro());
+        if (jogador.getTemArma())
+            System.out.println("Arma atual: " + jogador.getArmaAtual().getNome());
     }
 
     void LimpaMapa() {
