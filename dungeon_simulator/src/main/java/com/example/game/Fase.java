@@ -7,47 +7,38 @@ import com.example.items.Tesouro;
 public class Fase {
 
     Tesouro tesouroFase;
-    ArrayList<int[]> posicItens = new ArrayList<>();
-    int[] xI;
-    int[] yI;
+    ArrayList<int[]> posicBaus = new ArrayList<>();
+    int[] xB;
+    int[] yB;
 
-    public Fase(Tesouro tesouroFase, ArrayList<int[]> posicItens, int[] xI, int[] yI) {
-        this.tesouroFase = tesouroFase;
-        this.posicItens = posicItens;
-        this.xI = xI;
-        this.yI = yI;
+    public Fase(ArrayList<int[]> posicBaus, int[] xB, int[] yB) {
+        this.posicBaus = posicBaus;
+        this.xB = xB;
+        this.yB = yB;
     }
 
-    public Tesouro getTesouroFase() {
-        return tesouroFase;
+    public ArrayList<int[]> getPosicBaus() {
+        return posicBaus;
     }
 
-    public void setTesouroFase(Tesouro tesouroFase) {
-        this.tesouroFase = tesouroFase;
+    public void setPosicBaus(ArrayList<int[]> posicBaus) {
+        this.posicBaus = posicBaus;
     }
 
-    public ArrayList<int[]> getPosicItens() {
-        return posicItens;
+    public int[] getxB() {
+        return xB;
     }
 
-    public void setPosicItens(ArrayList<int[]> posicItens) {
-        this.posicItens = posicItens;
+    public void setxB(int[] xB) {
+        this.xB = xB;
     }
 
-    public int[] getxI() {
-        return xI;
+    public int[] getyB() {
+        return yB;
     }
 
-    public void setxI(int[] xI) {
-        this.xI = xI;
-    }
-
-    public int[] getyI() {
-        return yI;
-    }
-
-    public void setyI(int[] yI) {
-        this.yI = yI;
+    public void setyB(int[] yB) {
+        this.yB = yB;
     }
 
 }

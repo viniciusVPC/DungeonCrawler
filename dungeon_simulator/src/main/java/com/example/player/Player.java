@@ -1,15 +1,15 @@
 package com.example.player;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
-
-import javax.naming.ldap.Rdn;
 
 import com.example.combate.Combate;
 import com.example.game.Map;
 import com.example.game.Sistema;
 import com.example.items.Arma;
 import com.example.items.Armas;
+import com.example.items.Tesouro;
 
 public class Player {
     // parâmetros
@@ -18,6 +18,7 @@ public class Player {
     Armas seletorArma;
     Arma armaAtual;
     Sistema sis;
+    ArrayList<Tesouro> listaTesouros = new ArrayList<>();
     Map map;
     Scanner input = new Scanner(System.in);
     boolean erro = false;
@@ -56,21 +57,50 @@ public class Player {
                     ExibeInventario();
                     break;
                 default:
+                    System.out.println("resposta inválida");
+                    erro = true;
                     break;
             }
         } while (erro);
     }
 
-    public float Atacar() {
+    public int Atacar() {
         float danoFinal;
         if (temArma) {
             danoFinal = forca + 1 * armaAtual.getMultiplicador();
         } else
             danoFinal = forca;
-        return danoFinal;
+        return Math.round(danoFinal);
+    }
+
+    public void PegarTesouro(Tesouro tesouro) {
+        System.out.println("Você coloca " + tesouro.isMasculino() + " " + tesouro.getNome() + " na sua mochila");
+        listaTesouros.add(tesouro);
     }
 
     public void PegarArma(Arma arma) {
+        if (temArma) {
+            do {
+                System.out.println("Você deseja trocar sua arma atual (" + armaAtual.getNome() + " dano: "
+                        + armaAtual.getMultiplicador() +
+                        ") pela nova arma (" + arma.getNome() + " dano: " + armaAtual.getMultiplicador() + ")?");
+                System.out.println("[1] Sim     [2] Não");
+                int resposta = input.nextInt();
+                switch (resposta) {
+                    case 1:
+                        System.out.println("Você larga a sua arma atual e pega a nova arma (" + arma.getNome() + ")");
+                        armaAtual = arma;
+                        break;
+                    case 2:
+                        System.out.println("Você decide manter sua arma atual.");
+
+                    default:
+                        System.out.println("resposta inválida");
+                        erro = true;
+                        break;
+                }
+            } while (erro);
+        }
         temArma = true;
         armaAtual = arma;
     }
@@ -86,16 +116,16 @@ public class Player {
             System.out.println("");
 
             if (sis.getPosicPlayer()[0] - 1 >= 0) {
-                System.out.print("[1] Cima");
+                System.out.print("[1] Cima ");
             }
             if (sis.getPosicPlayer()[0] + 1 <= map.getMapa().length - 1) {
-                System.out.print("[2] Baixo");
+                System.out.print("[2] Baixo ");
             }
             if (sis.getPosicPlayer()[1] - 1 >= 0) {
-                System.out.print("[3] Esquerda");
+                System.out.print("[3] Esquerda ");
             }
             if (sis.getPosicPlayer()[1] + 1 <= map.getMapa().length - 1) {
-                System.out.print("[4] Direita");
+                System.out.print("[4] Direita ");
             }
             System.out.println("");
 
@@ -155,12 +185,20 @@ public class Player {
         System.out.println("----------------------------");
         System.out.println("Nome: " + nome);
         System.out.println("Nível: " + nivel);
+        System.out.println("");
         System.out.println("Arma atual: " + (temArma ? armaAtual.getNome() : "nenhuma"));
         if (temArma) {
             System.out.println(armaAtual.getDescricao());
             System.out.println("Dano: " + armaAtual.getMultiplicador());
             System.out.println("Área: " + armaAtual.getAreaDano());
         }
+        if (!listaTesouros.isEmpty()) {
+            System.out.println("Tesouros: ");
+            for (Tesouro tesouro : listaTesouros) {
+                System.out.println(tesouro.getNome() + " " + tesouro.getAdjetivo());
+            }
+        }
+        System.out.println("");
         // TODO exibir armadura
         // TODO exibir lista de itens consumíveis
         sis.EnterParaProsseguir();

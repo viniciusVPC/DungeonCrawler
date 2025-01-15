@@ -6,6 +6,7 @@ import java.util.Scanner;
 import com.example.combate.Combate;
 import com.example.items.Arma;
 import com.example.items.Armas;
+import com.example.items.Tesouro;
 import com.example.player.Player;
 
 public class Sistema {
@@ -13,8 +14,8 @@ public class Sistema {
     Map map;
     Fase fase;
     int faseNum = 1;
-    int[] posicPlayer, posicTesouro;
-    int xP, yP, xT, yT;
+    int[] posicPlayer, posicSaida;
+    int xP, yP, xS, yS;
     Player jogador = new Player();
     Combate combate = new Combate();
     Armas armas = new Armas();
@@ -25,12 +26,12 @@ public class Sistema {
         this.map = map;
         while (true) {
 
-            if (xP == xT && yP == yT) {
-                PegaTesouro();
+            if (xP == xS && yP == yS) {
+                alcancaSaida();
                 ProximaFase();
             } else {
-                if ("[I]".equals(map.getMapa()[xP][yP])) {
-                    PegaItem();
+                if ("[B]".equals(map.getMapa()[xP][yP])) {
+                    AbreBau();
                 }
             }
             MudaTela();
@@ -46,31 +47,41 @@ public class Sistema {
         s.nextLine();
     }
 
-    public void PegaTesouro() {
+    public void alcancaSaida() {
         MudaTela();
-        System.out.println("Parabéns você chegou ao tesouro!");
-        System.out.println(
-                "O tesouro é: um " + fase.getTesouroFase().getNome() + " " + fase.getTesouroFase().getAdjetivo());
+        System.out.println("Parabéns você chegou à saída!");
+        // TODO eventos aleatórios de fim de fase.
         EnterParaProsseguir();
     }
 
-    public void PegaItem() {
+    public void AbreBau() {
         MudaTela();
-        System.out.println("Parabéns, você achou um item!");
-        Arma novaArma = armas.ArmaRandom();
-        System.out.println(ExibeItem(novaArma));
-        jogador.PegarArma(novaArma);
+        System.out.println("Parabéns, você achou um baú!");
+        if (rand.nextInt(10) <= 3) {
+            Arma novaArma = armas.ArmaRandom();
+            System.out.println(ExibeArma(novaArma));
+            jogador.PegarArma(novaArma);
+        } else {
+            Tesouro tesouro = new Tesouro(this);
+            System.out.println(ExibeTesouro(tesouro));
+            jogador.PegarTesouro(tesouro);
+        }
 
-        for (int i = 0; i < fase.posicItens.size(); i++) {
-            if (fase.posicItens.get(i)[0] == xP && fase.posicItens.get(i)[1] == yP) {
-                fase.posicItens.remove(i);
+        for (int i = 0; i < fase.posicBaus.size(); i++) {
+            if (fase.posicBaus.get(i)[0] == xP && fase.posicBaus.get(i)[1] == yP) {
+                fase.posicBaus.remove(i);
             }
         }
         EnterParaProsseguir();
     }
 
-    public String ExibeItem(Arma arma) {
+    public String ExibeArma(Arma arma) {
         String texto = "Você conseguiu uma arma: " + arma.getNome();
+        return texto;
+    }
+
+    public String ExibeTesouro(Tesouro tesouro) {
+        String texto = "Você conseguiu um tesouro: " + tesouro.getNome() + " " + tesouro.getAdjetivo();
         return texto;
     }
 
@@ -110,12 +121,12 @@ public class Sistema {
         this.posicPlayer = posicPlayer;
     }
 
-    public int[] getPosicTesouro() {
-        return posicTesouro;
+    public int[] getPosicSaida() {
+        return posicSaida;
     }
 
-    public void setPosicTesouro(int[] posicTesouro) {
-        this.posicTesouro = posicTesouro;
+    public void setPosicSaida(int[] posicSaida) {
+        this.posicSaida = posicSaida;
     }
 
     public int getxP() {
@@ -134,20 +145,20 @@ public class Sistema {
         this.yP = yP;
     }
 
-    public int getxT() {
-        return xT;
+    public int getxS() {
+        return xS;
     }
 
-    public void setxT(int xT) {
-        this.xT = xT;
+    public void setxS(int xT) {
+        this.xS = xT;
     }
 
-    public int getyT() {
-        return yT;
+    public int getyS() {
+        return yS;
     }
 
-    public void setyT(int yT) {
-        this.yT = yT;
+    public void setyS(int yT) {
+        this.yS = yT;
     }
 
     public Player getJogador() {

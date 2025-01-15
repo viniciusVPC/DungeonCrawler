@@ -28,7 +28,7 @@ public class Combate {
         System.out.println("Tu te deparas com " + quantMonstros + " monstros.");
 
         for (int i = 0; i < quantMonstros; i++) {
-            Monstro monstro = new Monstro();
+            Monstro monstro = new Monstro(sis);
             monstros.add(monstro);
             System.out.print(introduzMonstro(monstro) + "\n");
         }
@@ -37,7 +37,8 @@ public class Combate {
     }
 
     public String introduzMonstro(Monstro monstro) {
-        String texto = "Um " + monstro.getNome() + " " + monstro.getAdjetivo() + " com " + monstro.getVida()
+        String texto = (monstro.isMasculino() ? "Um " : "Uma ") + monstro.getNome() + " " + monstro.getAdjetivo()
+                + " com " + monstro.getVida()
                 + " pontos de vida.";
         return texto;
     }
@@ -53,6 +54,8 @@ public class Combate {
         int resposta;
         do {
             round++;
+            if (round >= 2)
+                sis.MudaTela();
             System.out.println("ROUND: " + round);
             System.out.print("O que tu vais fazer?\n[1] Atacar\n[2] Curar\n[3] Fugir\n");
             resposta = input.nextInt();
@@ -81,16 +84,18 @@ public class Combate {
     public void Ataque() {
         System.out.println("Qual inimigo tu queres atacar?");
         for (int i = 0; i < monstros.size(); i++) {
-            System.out.print("[" + (i + 1) + "] " + monstros.get(i).getNome() + "\n");
+            System.out.print(
+                    "[" + (i + 1) + "] " + monstros.get(i).getNome() + " - Vida: " + monstros.get(i).getVida() + "\n");
         }
         System.out.print("\n");
         int resposta = input.nextInt();
         Monstro alvo = monstros.get(resposta - 1);
         sis.MudaTela();
-        float dano = jogador.Atacar();
-        System.out.println("Tu atacas e dá " + dano + " de dano no " + alvo.getNome());
+        int dano = jogador.Atacar();
+        System.out.println(
+                "Tu atacas e dá " + dano + " de dano " + (alvo.isMasculino() ? "no " : "na ") + alvo.getNome());
         if (dano >= alvo.getVida()) {
-            System.out.println("Você derrota o " + alvo.getNome());
+            System.out.println("Você derrota " + (alvo.isMasculino() ? "o " : "a ") + alvo.getNome());
             monstros.remove(alvo);
         }
         alvo.receberDano(dano);
@@ -110,6 +115,7 @@ public class Combate {
             jogador.setVida(jogador.getVida() - monstro.Ataca());
             System.out.println("Você agora está com " + jogador.getVida() + " pontos de vida");
         }
+        sis.EnterParaProsseguir();
     }
 
     public void FimDoCombate() {
